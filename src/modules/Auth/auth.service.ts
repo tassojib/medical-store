@@ -51,5 +51,6 @@ const {password,...newUser}=user
 
 export const AuthService = {
     
-    createUser,loginUser
+    createUser,
+    loginUser
     };
