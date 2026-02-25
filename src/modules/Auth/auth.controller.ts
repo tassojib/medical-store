@@ -2,29 +2,32 @@ import { NextFunction, Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import sendResponse from "../../utils/sendResponse";
 
+// Handle user registration
+const createUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const result = await AuthService.createUser(req.body);
 
-const createUser=async(req:Request,res:Response,next:NextFunction)=>{
-    try{
-         const result=await AuthService.createUser(req.body)
-            sendResponse(res, {
+    sendResponse(res, {
       statusCode: 201,
       success: true,
       message: "User created",
       data: result,
     });
-    }catch(error){
-      next(error)
-    }
+  } catch (error) {
+    next(error);
+  }
+};
 
-}
-const loginUser = async (req: Request, res: Response,next:NextFunction) => {
+// Handle user login
+const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await AuthService.loginUser(req.body);
 
+    // Store JWT in httpOnly cookie
     res.cookie("token", result.token, {
       secure: false,
       httpOnly: true,
-      sameSite: "strict", // none / strict / lax
+      sameSite: "strict",
     });
 
     sendResponse(res, {
@@ -34,9 +37,11 @@ const loginUser = async (req: Request, res: Response,next:NextFunction) => {
       data: result,
     });
   } catch (error) {
-       next(error)
+    next(error);
   }
 };
+
 export const AuthController = {
-    createUser,loginUser
-    };
+  createUser,
+  loginUser,
+};

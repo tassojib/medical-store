@@ -4,34 +4,32 @@ import { prisma } from "../../lib/prisma";
 import { User } from "../../../generated/prisma/client";
 import config from "../../config";
 
-const createUser=async(payload:User)=>{
-const hashedPassword= await bcrypt.hash(payload.password,8)
-const result=await prisma.user.create({
-    data:{...payload,password:hashedPassword}
-})
-const {password,...newResult}=result
-return newResult
-}
+// Create new user
+const createUser = async (payload: User) => {
+  const hashedPassword = await bcrypt.hash(payload.password, 8);
 
-const loginUser = async (payload: {email:string,password:string}) => {
-  const user = await prisma.user.findUniqueOrThrow({
-    where: {
-      email: payload.email,
-    },
+  const result = await prisma.user.create({
+    data: { ...payload, password: hashedPassword },
   });
-  if (!user) {
-    throw new Error("User not found!");
-  }
 
-  const ispasswordMatched = await bcrypt.compare(
-    payload.password,
-    user.password
-  );
+  // Remove password before returning
+  const { password, ...newResult } = result;
+  return newResult;
+};
 
-  if (!ispasswordMatched) {
+// User login
+const loginUser = async (payload: { email: string; password: string }) => {
+  const user = await prisma.user.findUniqueOrThrow({
+    where: { email: payload.email },
+  });
+
+  // Validate password
+  const isPasswordMatched = await bcrypt.compare(payload.password, user.password);
+  if (!isPasswordMatched) {
     throw new Error("Invalid credentials!!");
   }
 
+  // Pick safe user data for JWT
   const userData = {
     id: user.id,
     name: user.name,
@@ -40,17 +38,15 @@ const loginUser = async (payload: {email:string,password:string}) => {
     email: user.email,
   };
 
+  // Sign JWT token
   const token = jwt.sign(userData, config.jwt_secret, { expiresIn: "1d" });
-const {password,...newUser}=user
-  return {
-    token,
-    newUser,
-  };
+
+  // Return token and sanitized user
+  const { password, ...newUser } = user;
+  return { token, newUser };
 };
 
-
 export const AuthService = {
-    
-    createUser,
-    loginUser
-    };
+  createUser,
+  loginUser,
+};

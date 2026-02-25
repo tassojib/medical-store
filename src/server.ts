@@ -1,6 +1,7 @@
-import app from './app';
-import config from './config';
+import app from "./app";
+import config from "./config";
 
+// Start server
 async function main() {
   try {
     app.listen(config.port, () => {

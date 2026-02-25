@@ -1,19 +1,23 @@
-import express, { Application, Request, Response } from 'express';
-import cors from 'cors';
-import { AuthRoutes } from './modules/Auth/auth.route';
-import globalErrorHandler from './middlewares/globalErrorHandler';
+import express, { Application, Request, Response } from "express";
+import cors from "cors";
+import globalErrorHandler from "./middlewares/globalErrorHandler";
+import router from "./routes";
 
 const app: Application = express();
 
-// parsers
+// Middleware parsers
 app.use(express.json());
 app.use(cors());
 
-// application routes
-// app.use('/api/v1', router);
-app.use('/api/v1/auth', AuthRoutes);
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello from Apollo Gears World!');
+// Application routes
+app.use("/api/v1", router);
+
+// Test root route
+app.get("/", (req: Request, res: Response) => {
+  res.send("Hello from Medistore!");
 });
+
+// Global error handler
 app.use(globalErrorHandler);
+
 export default app;
