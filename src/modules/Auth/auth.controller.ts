@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import sendResponse from "../../utils/sendResponse";
 
+
 // Handle user registration
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -41,7 +42,65 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const getUserProfile = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    // Ensure user is authenticated
+    if (!req.user) {
+      throw new Error("Unauthorized!");
+    }
+
+    // Fetch user profile
+    const result = await AuthService.getUserProfile(req.user);
+
+    // Send response
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: "User profile fetched successfully",
+      data: result,
+    });
+  } catch (error) {
+    // Forward error to global handler
+    next(error);
+  }
+};
+
+const updateUserProfile = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    // Ensure user is authenticated
+    if (!req.user) {
+      throw new Error("Unauthorized!");
+    }
+
+    // Block empty update request
+    if (!Object.keys(req.body).length) {
+      throw new Error("Nothing to update");
+    }
+
+    // Update user profile
+    const result = await AuthService.updateUserProfile(req.user, req.body);
+
+    // Send response
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: "User profile updated successfully",
+      data: result,
+    });
+  } catch (error) {
+    // Forward error to global handler
+    next(error);
+  }
+};
+
+
 export const AuthController = {
   createUser,
   loginUser,
+  getUserProfile,
+  updateUserProfile
 };
