@@ -385,7 +385,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
-  Category: 'Category'
+  Category: 'Category',
+  Medicine: 'Medicine'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -401,7 +402,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "category"
+    modelProps: "user" | "category" | "medicine"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -553,6 +554,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Medicine: {
+      payload: Prisma.$MedicinePayload<ExtArgs>
+      fields: Prisma.MedicineFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MedicineFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicinePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MedicineFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicinePayload>
+        }
+        findFirst: {
+          args: Prisma.MedicineFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicinePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MedicineFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicinePayload>
+        }
+        findMany: {
+          args: Prisma.MedicineFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicinePayload>[]
+        }
+        create: {
+          args: Prisma.MedicineCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicinePayload>
+        }
+        createMany: {
+          args: Prisma.MedicineCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MedicineCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicinePayload>[]
+        }
+        delete: {
+          args: Prisma.MedicineDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicinePayload>
+        }
+        update: {
+          args: Prisma.MedicineUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicinePayload>
+        }
+        deleteMany: {
+          args: Prisma.MedicineDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MedicineUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MedicineUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicinePayload>[]
+        }
+        upsert: {
+          args: Prisma.MedicineUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicinePayload>
+        }
+        aggregate: {
+          args: Prisma.MedicineAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMedicine>
+        }
+        groupBy: {
+          args: Prisma.MedicineGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MedicineGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MedicineCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MedicineCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -614,6 +689,23 @@ export const CategoryScalarFieldEnum = {
 } as const
 
 export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
+
+
+export const MedicineScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  desc: 'desc',
+  manufacturer: 'manufacturer',
+  price: 'price',
+  imgUrl: 'imgUrl',
+  stock: 'stock',
+  categoryId: 'categoryId',
+  sellerId: 'sellerId'
+} as const
+
+export type MedicineScalarFieldEnum = (typeof MedicineScalarFieldEnum)[keyof typeof MedicineScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -703,6 +795,20 @@ export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
 
 
 /**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -713,6 +819,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -812,6 +932,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   category?: Prisma.CategoryOmit
+  medicine?: Prisma.MedicineOmit
 }
 
 /* Types for Logging */

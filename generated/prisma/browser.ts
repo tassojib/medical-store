@@ -27,3 +27,8 @@ export type User = Prisma.UserModel
  * 
  */
 export type Category = Prisma.CategoryModel
+/**
+ * Model Medicine
+ * 
+ */
+export type Medicine = Prisma.MedicineModel
