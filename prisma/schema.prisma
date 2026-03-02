@@ -60,6 +60,7 @@ model Medicine {
   sellerId     String
   seller       User     @relation(fields: [sellerId], references: [id])
 
+  @@unique([name, sellerId])
   @@index([price, manufacturer, categoryId])
   @@map("medicines")
 }
